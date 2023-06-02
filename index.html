@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <title>BRC-721.pro - BRC-721 Bitcoin Ordinals Collection Inscription Minter </title>
+    <meta name="description" content="BRC-721 (BRC721) token on bitcoin ordinals. Mint BRC721 and view your collection" />
+    <meta name="author" content="brc-721.pro">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BRC-721.pro -  BRC-721  Bitcoin Ordinals Collection Inscription Minter" />
+    <!-- change to production project domain: -->
+    <meta property="og:url" content="https://brc-721.pro/" />
+    <meta property="og:description" content="BRC-721 (BRC721) token on bitvoin ordinals. Mint BRC721 and view your collection" />
+    <!-- change to production project domain: -->
+    <meta property="og:image" content="https://brc-721.pro/favicon.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BRC-721.pro -  BRC-721  Bitcoin Ordinals Collection Inscription Minter" />
+    <meta name="twitter:description" content="BRC-721 (BRC721) token on bitvoin ordinals. Mint BRC721 and view your collection" />
+    <!-- change to production project domain: -->
+    <meta name="twitter:image" content="https://brc-721.pro/favicon.png" />
+    <script src="script.js?65"></script>
+    <link rel="stylesheet" href="style.css?2">
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereumjs/browser-builds/dist/ethereumjs-tx/ethereumjs-tx-1.3.3.min.js"></script>
+    <script type="module"> import "./bitcoinjs-lib.js"</script>
+    <script type="module"> import "./ecc.js"</script>
+
+    <!-- Google tag (gtag.js)
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-T86R2EFF37"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-T86R2EFF37');
+		</script>
+		-->
+</head>
+
+<body onload="bodyload()">
+
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+
+			BRC-721.PRO - Collection Inscription Minter
+		  </a>
+
+        <div class="navbar-nav ml-auto" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-warning" onclick="switchView('mybrc721'); return false;" href="#">My Assets </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" onclick="switchView('mintdiv'); return false;" href="#"> Mint BRC-721 </a>
+                </li>
+
+            </ul>
+        </div>
+
+    </nav>
+
+    <center>
+        <div id="vip_member" style="display:none; position:fixed; left:20px; top: 40px;">
+            <img src="/images/crown2.png" alt="brc-721.pro VIP memebr" width="150px" />
+        </div>
+
+        <div class="container">
+
+            <h2 class="text-light"> BRC-721 Bitcoin Ordinals </h2>
+        </div>
+        <h5 class="text-light">Thanks 4 donate: <a class="text-success" href="bitcoin://bc1p087w8044h5pq3uth957jh9zc6jg7rhdkse5acl3qnwxmx74es8tqsq8lcd">bc1p087w8044h5pq3uth957jh9zc6jg7rhdkse5acl3qnwxmx74es8tqsq8lcd</a></h5>
+        <h5 class="text-light">Join Telegram Together: <a class="text-success" href="https://t.me/brc721pro">https://t.me/brc721pro</a></h5>
+        
+        
+
+        <div class="container text-light" id="connectWallet" style="display:none">
+            <a class="btn btn-primary" href="#" onclick="init(); return false;">Connect OrdinalSafe wallet</a>
+            <br> ( <a href="https://ordinalsafe.xyz/" target="_blank">Install OrdinalSafe wallet</a> )
+        </div>
+
+    </center>
+
+    <div class="container bg-light text-left p-3" id="submitMintDiv" style="display:none; max-width:700px">
+        <div class="row">
+            <div class="col-sm">
+                <h2> Submit your Mint </h2>
+                <h4> Only for brc-721.pro members <img data-toggle="tooltip" data-placement="bottom" title="To be member you need keep project token (BRCPRO #508) in your wallet " src="/images/crown2.png" width="60px" alt="brc-721.pro members. list your brc721 mint"
+                        style="margin-top:-20px" /> </h4>
+
+                <form onsubmit="return validateSubmitMint(this);" action="https://api.staticforms.xyz/submit" method="post">
+
+
+                    <!-- Replace with accesKey sent to your email -->
+                    <input type="hidden" name="accessKey" value="8313de3e-6bf5-4bb7-964d-0dfd63b30f76">
+                    <!-- Required -->
+                    <div class="form-group text-left  p-3">
+                        <label for="CollectionID">Collection ID:</label>
+                        <input type="text" class="form-control" id="CollectionID" name="$CollectionID" placeholder="298801ab646b6e8398d02145c5d2855274d0e09936bafee64109340a734584cbi0">
+                        <!-- Optional -->
+                    </div>
+                    <div class="form-group text-left  p-3">
+                        <label for="tokenSymbol">Collection Symbol:</label>
+                        <input type="text" class="form-control" id="tokenSymbol" name="$tokenSymbol" placeholder="BRCPRO">
+                        <!-- Optional -->
+                    </div>
+                    <div class="form-group text-left p-3">
+
+                        <label for="manifest">Inscription Manifest:</label>
+                        <textarea name="$manifest" class="form-control" id="manifest"></textarea>
+                        <!-- Optional -->
+                    </div>
+                    <p>
+                        * Will be listed after review...
+                    </p>
+                    <input type="hidden" name="redirectTo" value="https://brc-721.pro/thankyou.html">
+                    <!-- Optional -->
+                    <button type="submit" class="btn btn-success btn-lg" /> <img data-toggle="tooltip" data-placement="bottom" title="To be member you need keep project token (BRCPRO #508) in your wallet " src="/images/crown2.png" width="40px" alt="brc-721.pro members. list your brc721 mint"
+                        style="margin-top:-10px" /> Submit
+                    </button>
+                    <input type="button" onclick="hideSubmitCollection(); return false" class="btn btn-primary btn-lg" value="Cancel" />
+                    <br><br>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+    <div class="container" id="searchInfo" style="display:none;  max-width: 700px;">
+        <center>
+            <BR>
+            <h2 class="text-light">Search BRC-721 information</h2>
+            <h3 id="spinner_searchInfo" class="text-warning" style="display:none">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Loading...
+            </h3>
+
+            <div class="form-group  p-3 ">
+                <input type="text" class="form-control" id="sarchInfoID" placeholder="Collection or Inscription ID">
+                <!-- Optional -->
+                <button class="btn btn-primary btn-lg" onclick="getAssetInfo();"> Search </button>
+            </div>
+
+            <div class="row" id="searchInfo_row">
+
+
+            </div>
+        </center>
+
+    </div>
+
+
+
+    <div class="container" id="mintdiv" style="display:block;  max-width: 2000px;">
+        <center>
+            <BR>
+            <h3 class="text-light">Mint BRC-721 NFT</h3>
+            <h3 id="spinner_mint" class="text-warning" style="display:none">
+
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Loading...
+            </h3>
+
+
+            <div class="row" id="mintdiv_row">
+
+
+            </div>
+        </center>
+
+    </div>
+
+
+
+    <div class="container" id="mybrc721" style="display:none; max-width: 2000px;">
+        <center>
+
+            <h3 class="text-light">
+
+                My BRC-721 NFTs
+                <a href="#" onclick="getMyBRC721(); return false;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+					   <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+					   <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+					 </svg></a>
+            </h3>
+            <h3 id="spinner_mybrc" class="text-warning" style="display:none">
+
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Loading...
+            </h3>
+            <div class="row" id="mybrc721_row">
+
+
+            </div>
+            <h3 id="spinner_mybrc2" class="text-warning" style="display:none">
+
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Loading...
+            </h3>
+        </center>
+    </div>
+
+    <BR>
+    <BR>
+    <center>
+        <h5 class="text-light">Thanks 4 donate: <a class="text-success" href="bitcoin://bc1p087w8044h5pq3uth957jh9zc6jg7rhdkse5acl3qnwxmx74es8tqsq8lcd">bc1p087w8044h5pq3uth957jh9zc6jg7rhdkse5acl3qnwxmx74es8tqsq8lcd</a></h5>
+        <h5 class="text-light">Join Telegram Together: <a class="text-success" href="https://t.me/brc721pro">https://t.me/brc721pro</a></h5>
+        <center>
+            <BR>
+            <BR>
+            <BR>
+            <BR>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+            <script type="module">
+                // Import the functions you need from the SDKs you need import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"; // TODO: Add SDKs for Firebase products that you want to use // https://firebase.google.com/docs/web/setup#available-libraries
+                // Your web app's Firebase configuration const firebaseConfig = { apiKey: "AIzaSyBvjoegqhmEAo8Xwky2xYY4mzCP9s-W8KA", authDomain: "brc-721pro.firebaseapp.com", projectId: "brc-721pro", storageBucket: "brc-721pro.appspot.com", messagingSenderId:
+                "79022861963", appId: "1:79022861963:web:7be97fff1b9566b073ee8e" }; // Initialize Firebase const app = initializeApp(firebaseConfig);
+            </script>
+
+
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-T86R2EFF37"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+
+                gtag('config', 'G-T86R2EFF37');
+            </script>
+
+
+</body>
+
+</html>
